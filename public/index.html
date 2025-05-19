@@ -1,29 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Purchase Order Form</title>
+    <link rel='stylesheet' href='//fonts-api.wp.com/css?family=Inter%3A400%2C500%2C700%2C900&display=swap&ver=1.1.7' media='all' />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
+        :root {
+            --global--font-family-body: Inter, sans-serif;
+            --global--font-size-body: 16px;
+            --global--color-body: #22262c;
+            --global--color-font: #f8f8f8;
+            --global--color-border: #4a4e58;
+            --global--color-highlight: #e00b25;
+            --content--max-width: 1180px;
+            --footer--font-color: #f8f8f8;
+            --footer--background-color: #22262c;
+        }
+        html, body {
+            background-color: var(--global--color-body);
+            color: var(--global--color-font);
+            font-family: var(--global--font-family-body);
+            font-size: var(--global--font-size-body);
             margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
+            padding: 0;
+        }
+        .site-header {
+            background: #22262c;
+            border-bottom: 1px solid var(--global--color-border);
+            padding: 0;
+            margin-bottom: 0;
+        }
+        .site-header-wrapper {
+            max-width: var(--content--max-width);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 94px;
+        }
+        .site-logo img {
+            height: 40px;
+            margin: 20px 0 20px 10px;
+        }
+        .site-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--global--color-font);
+            margin-left: 20px;
         }
         .container {
-            max-width: 1200px;
+            max-width: var(--content--max-width);
             margin: 0 auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: #2d3138;
+            padding: 30px 20px;
+            border-radius: 0;
+            box-shadow: none;
         }
         h1 {
-            text-align: center;
-            color: #333;
+            text-align: left;
+            color: var(--global--color-font);
             margin-bottom: 30px;
+            font-size: 2.2rem;
+            font-weight: 700;
         }
         .form-group {
             margin-bottom: 20px;
@@ -31,91 +70,125 @@
         label {
             display: block;
             margin-bottom: 5px;
-            font-weight: bold;
+            font-weight: 500;
         }
         input[type="text"],
         input[type="email"],
         input[type="number"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
+            padding: 12px;
+            border: 1px solid var(--global--color-border);
             border-radius: 4px;
             box-sizing: border-box;
+            background: #343842;
+            color: var(--global--color-font);
+            font-family: inherit;
+            font-size: 1rem;
         }
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 20px;
+            gap: 24px;
             margin-bottom: 30px;
         }
         .product-card {
-            border: 1px solid #ddd;
+            border: 1px solid var(--global--color-border);
             border-radius: 8px;
-            padding: 15px;
-            transition: all 0.3s ease;
+            padding: 18px 14px 20px 14px;
+            background: #2d3138;
+            transition: box-shadow 0.3s;
         }
         .product-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 16px rgba(40,40,40,0.18);
         }
         .product-card.selected {
-            border-color: #4CAF50;
-            background-color: #f1f8e9;
+            border-color: var(--global--color-highlight);
+            background-color: #343842;
         }
         .product-image {
             width: 100%;
             height: 200px;
             object-fit: contain;
             margin-bottom: 10px;
-            background-color: #f9f9f9;
+            background-color: #40434e;
             border-radius: 4px;
         }
         .product-name {
-            font-weight: bold;
+            font-weight: 600;
             margin-bottom: 5px;
-            font-size: 16px;
+            font-size: 1.1rem;
             height: 40px;
             overflow: hidden;
+            color: var(--global--color-font);
         }
         .product-price {
-            color: #4CAF50;
-            font-weight: bold;
+            color: var(--global--color-highlight);
+            font-weight: 700;
             margin-bottom: 10px;
-            font-size: 18px;
+            font-size: 1.1rem;
+        }
+        .product-original-price {
+            color: #93989f;
+            font-size: 0.95rem;
+            text-decoration: line-through;
+            display: block;
+            margin-bottom: 2px;
+            margin-top: 0;
+            font-weight: 400;
         }
         .product-quantity {
             display: flex;
             align-items: center;
         }
         .quantity-btn {
-            width: 30px;
-            height: 30px;
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            font-size: 16px;
+            width: 32px;
+            height: 32px;
+            background-color: #343842;
+            border: 1px solid var(--global--color-border);
+            font-size: 18px;
             cursor: pointer;
+            color: var(--global--color-font);
+            border-radius: 4px;
         }
         .quantity-btn:hover {
-            background-color: #e0e0e0;
+            background-color: #4a4e58;
         }
         .quantity-input {
             width: 50px;
-            height: 28px;
+            height: 32px;
             text-align: center;
             margin: 0 5px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--global--color-border);
+            border-radius: 4px;
+            font-size: 1rem;
+            background: #343842;
+            color: var(--global--color-font);
+            appearance: textfield;
+        }
+        /* Chrome, Safari, Edge, Opera */
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         .btn {
-            padding: 12px 20px;
-            background-color: #4CAF50;
-            color: white;
+            padding: 12px 24px;
+            background-color: var(--global--color-font);
+            color: #22262c;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background-color: var(--global--color-highlight);
+            color: #fff;
         }
         .btn-secondary {
             background-color: #2196F3;
+            color: #fff;
         }
         .actions {
             display: flex;
@@ -125,18 +198,18 @@
         .total-section {
             margin-top: 20px;
             text-align: right;
-            font-size: 18px;
+            font-size: 1.1rem;
         }
         .total-amount {
-            font-weight: bold;
-            font-size: 24px;
-            color: #333;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--global--color-font);
         }
         .encryption-notice {
             display: flex;
             align-items: center;
             margin-top: 20px;
-            color: #555;
+            color: #93989f;
             font-size: 14px;
         }
         .encryption-icon {
@@ -145,8 +218,8 @@
         }
         .success-message {
             text-align: center;
-            background-color: #dff0d8;
-            color: #3c763d;
+            background-color: #357b49;
+            color: #f8f8f8;
             padding: 20px;
             border-radius: 4px;
             margin-top: 20px;
@@ -154,8 +227,8 @@
         }
         .error-message {
             text-align: center;
-            background-color: #f2dede;
-            color: #a94442;
+            background-color: #b71c1c;
+            color: #f8f8f8;
             padding: 20px;
             border-radius: 4px;
             margin-top: 20px;
@@ -163,7 +236,7 @@
         }
         .order-summary {
             margin-top: 30px;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid var(--global--color-border);
             padding-top: 20px;
         }
         .order-summary h3 {
@@ -176,16 +249,111 @@
         .order-table th, .order-table td {
             padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid var(--global--color-border);
         }
         .order-table th {
-            background-color: #f2f2f2;
+            background-color: #343842;
+            color: #f8f8f8;
+        }
+        .site-footer-bar-wrapper {
+            background: var(--footer--background-color);
+            border-top: 1px solid var(--global--color-border);
+            margin-top: 40px;
+        }
+        .site-footer-bar {
+            max-width: var(--content--max-width);
+            margin: 0 auto;
+            padding: 30px 20px 20px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .site-info {
+            color: var(--footer--font-color);
+            font-size: 1rem;
+        }
+        @media (max-width: 900px) {
+            .site-header-wrapper, .site-footer-bar {
+                max-width: 100%;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            .container {
+                padding: 20px 5px;
+            }
+        }
+        .discount-section {
+            background: #fffbe6;
+            color: #b8860b;
+            border-radius: 6px;
+            padding: 6px 12px;
+            display: inline-block;
+            font-size: 0.98rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 2px;
+        }
+        .discount-label {
+            color: #b8860b;
+        }
+        .product-name-row {
+            margin-bottom: 2px;
+        }
+        .product-name-main {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: #fff;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .product-price-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+        .product-original-price {
+            color: #93989f;
+            font-size: 1.1rem;
+            text-decoration: line-through;
+            margin-right: 6px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+        }
+        .product-sale-price {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-right: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+        .discount-pill {
+            background: transparent;
+            color: #f2ff86;
+            border-radius: 16px;
+            padding: 2px 14px;
+            font-size: 0.97rem;
+            font-weight: 500;
+            display: inline-block;
+            border: 1px solid #f2ff86;
+            letter-spacing: 1px;
+            font-family: 'Inter', sans-serif;
         }
     </style>
 </head>
 <body>
+    <header class="site-header">
+        <div class="site-header-wrapper">
+            <div class="site-logo">
+                <img src="https://totalhealthonline.com/wp-content/uploads/2025/04/TOTAL-HEALTH-1.svg" alt="Total Health Online" />
+            </div>
+            <span class="site-title">Purchase Order Form</span>
+        </div>
+    </header>
     <div class="container">
-        <h1>Purchase Order Form</h1>
+   
         
         <div id="success-message" class="success-message">
             <h2>Thank you for your order!</h2>
@@ -199,13 +367,24 @@
         
         <form id="purchaseOrderForm">
             <div class="form-group">
-                <label for="customerName">Full Name</label>
+                <label for="customerName">Your Name</label>
                 <input type="text" id="customerName" name="customerName" required>
             </div>
             
             <div class="form-group">
                 <label for="email">Your Email Address</label>
                 <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="specialInstructions">Special Instructions</label>
+                <input type="text" id="specialInstructions" name="specialInstructions" placeholder="Any special instructions for your order...">
+            </div>
+            
+            <div class="form-group" style="position:relative;">
+                <label for="productSearch">Search Products</label>
+                <input type="text" id="productSearch" name="productSearch" placeholder="Search for a product..." autocomplete="off" style="width:100%;padding:12px;border:1px solid var(--global--color-border);border-radius:4px;background:#343842;color:var(--global--color-font);font-size:1rem;">
+                <div id="searchResults" style="position:absolute;top:100%;left:0;width:100%;background:#2d3138;border:1px solid var(--global--color-border);border-top:none;z-index:10;max-height:200px;overflow-y:auto;display:none;"></div>
             </div>
             
             <div class="form-group">
@@ -252,6 +431,15 @@
             </div>
         </form>
     </div>
+    <footer>
+        <div class="site-footer-bar-wrapper">
+            <div class="site-footer-bar">
+                <div class="site-info">
+                    © 2025 Total Health Standard
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
@@ -267,79 +455,70 @@
             
             // Product data from your CSV file
             const products = [
-                {
-                    id: "112",
-                    name: "Oxytocin Acetate - 2mg",
-                    price: 59.99,
-                    image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/112/images/475/OXYTOCION-ACETATE_GRADIENT__37599.1744770041.386.513.jpg?c=1"
-                },
-                {
-                    id: "113",
-                    name: "PEG-MGF",
-                    price: 70.00,
-                    image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/113/images/474/PEG-MGFGRADIENT__43816.1744770026.386.513.jpg?c=1"
-                },
-                {
-                    id: "114",
-                    name: "PT-141 5mg",
-                    price: 52.00,
-                    image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/114/images/473/PT-141_GRADIENT__97313.1744770014.386.513.jpg?c=1"
-                },
-                {
-                    id: "115",
-                    name: "Selank 5mg",
-                    price: 55.00,
-                    image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/115/images/472/Selank_GRADIENT__98506.1744769998.386.513.jpg?c=1"
-                },
-                {
-                    id: "118",
-                    name: "Semaglutide 2mg",
-                    price: 50.00,
-                    image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/118/images/471/Semagliutide_GRADIENT__51606.1744769982.386.513.jpg?c=1"
-                },
-                {
-                    id: "119",
-                    name: "Semax 10mg",
-                    price: 74.99,
-                    image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/119/images/470/Semax_GRADIENT__86200.1744769968.386.513.jpg?c=1"
-                },
-                {
-                    id: "121",
-                    name: "Sermorelin 2mg",
-                    price: 100.00,
-                    image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/121/images/469/Sermorelin_GRADIENT__24223.1744769956.386.513.jpg?c=1"
-                },
-                {
-                    id: "122",
-                    name: "Snap-8 10mg",
-                    price: 33.00,
-                    image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/122/images/468/SNAP-8_GRADIENT__51410.1744769945.386.513.jpg?c=1"
-                },
-                {
-                    id: "125",
-                    name: "Thymulin",
-                    price: 119.99,
-                    image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/125/images/513/THYMULIN__08054.1745375329.386.513.png?c=1"
-                },
-                {
-                    id: "127",
-                    name: "Tesamorelin 2mg",
-                    price: 140.00,
-                    image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/127/images/466/TESAMORELIN_GRADIENT__76288.1744769904.386.513.jpg?c=1"
-                },
-                {
-                    id: "128",
-                    name: "Thymosin alpha 1 - 5 MG",
-                    price: 70.00,
-                    image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/128/images/512/thymosin_alpha_1__88977.1745375257.386.513.png?c=1"
-                },
-                {
-                    id: "131",
-                    name: "TB-500 (Thymosin β4) 2mg",
-                    price: 36.00,
-                    image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/131/images/511/thymosin_beta_4__79718.1745375159.386.513.png?c=1"
-                }
+                { name: "Oxytocin Acetate - 2mg", price: 59.99, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/112/images/475/OXYTOCION-ACETATE_GRADIENT__37599.1744770041.386.513.jpg?c=1" },
+                { name: "PEG-MGF", price: 70, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/113/images/474/PEG-MGFGRADIENT__43816.1744770026.386.513.jpg?c=1" },
+                { name: "PT-141 5mg", price: 52, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/114/images/473/PT-141_GRADIENT__97313.1744770014.386.513.jpg?c=1" },
+                { name: "Selank 5mg", price: 55, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/115/images/472/Selank_GRADIENT__98506.1744769998.386.513.jpg?c=1" },
+                { name: "Semaglutide 2mg", price: 50, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/118/images/471/Semagliutide_GRADIENT__51606.1744769982.386.513.jpg?c=1" },
+                { name: "Semax 10mg", price: 74.99, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/119/images/470/Semax_GRADIENT__86200.1744769968.386.513.jpg?c=1" },
+                { name: "Sermorelin 2mg", price: 100, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/121/images/469/Sermorelin_GRADIENT__24223.1744769956.386.513.jpg?c=1" },
+                { name: "Snap-8 10mg", price: 33, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/122/images/468/SNAP-8_GRADIENT__51410.1744769945.386.513.jpg?c=1" },
+                { name: "Thymulin", price: 119.99, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/125/images/513/THYMULIN__08054.1745375329.386.513.png?c=1" },
+                { name: "Tesamorelin 10 mg", price: 140, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/127/images/466/TESAMORELIN_GRADIENT__76288.1744769904.386.513.jpg?c=1" },
+                { name: "Tesamorelin 5 mg", price: 80, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/127/images/466/TESAMORELIN_GRADIENT__76288.1744769904.386.513.jpg?c=1" },
+                { name: "Tesamorelin 2 mg", price: 60, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/127/images/466/TESAMORELIN_GRADIENT__76288.1744769904.386.513.jpg?c=1" },
+                { name: "Thymosin alpha 1 - 5 MG", price: 70, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/128/images/512/thymosin_alpha_1__88977.1745375257.386.513.png?c=1" },
+                { name: "TB-500 (Thymosin β4) 2mg", price: 36, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/131/images/511/thymosin_beta_4__79718.1745375159.386.513.png?c=1" },
+                { name: "Retatrutide 10 MG", price: 144, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/135/images/462/Retatrutide_GRADIENT__03884.1744769837.386.513.jpg?c=1" },
+                { name: "Adipotide - 10 MG", price: 88.99, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/136/images/510/ADIPOTIDE__20821.1745375062.386.513.png?c=1" },
+                { name: "NAD+ 500mg", price: 84, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/137/images/460/NAD_GRADIENT__25854.1744769805.386.513.jpg?c=1" },
+                { name: "AOD-9604 2mg", price: 42, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/138/images/459/AOD-9604_Gradient__80823.1744769785.386.513.jpg?c=1" },
+                { name: "BPC 157 2mg", price: 27, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/139/images/458/bpc-157_gradient__92823.1744769773.386.513.jpg?c=1" },
+                { name: "Cagrilintide 5mg", price: 90, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/155/images/457/cagrilintide_gradient__15238.1744769759.386.513.jpg?c=1" },
+                { name: "DSIP (Delta Sleep-Inducing Peptide) 5mg", price: 50, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/156/images/456/DSIP_gradient__66624.1744769743.386.513.jpg?c=1" },
+                { name: "Epithalon 10mg", price: 90, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/157/images/455/Epitalon_GRADIENTnew__99542.1744769715.386.513.jpg?c=1" },
+                { name: "GHK-Cu 50mg", price: 45, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/159/images/454/GHK-Cu_GRADIENTnew__25470.1744769701.386.513.jpg?c=1" },
+                { name: "GHRP-2 - 2mg", price: 36, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/160/images/453/GFHRP-2_GRADIENT__91575.1744769687.386.513.jpg?c=1" },
+                { name: "HCG 5,000iu", price: 60, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/161/images/452/hcg_GRADIENT__03020.1744769675.386.513.jpg?c=1" },
+                { name: "Hexarelin 2mg", price: 45, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/162/images/451/hexarelion_GRADIENT__77586.1744769662.386.513.jpg?c=1" },
+                { name: "IGF-1 LR3 1mg", price: 110, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/164/images/449/IGF_LR3_GRADIENT__74339.1744769632.386.513.jpg?c=1" },
+                { name: "Kisspeptin-10 5mg", price: 65, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/165/images/448/KISSPEPTIN_GRADIENT__55005.1744769620.386.513.jpg?c=1" },
+                { name: "MOTS-C 10mg", price: 65, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/166/images/447/MOTS-CGRADIENT__92352.1744769548.386.513.jpg?c=1" },
+                { name: "Melanotan 2 10mg", price: 30, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/167/images/446/MELANOTAN_2_GRADIENT__35651.1744769454.386.513.jpg?c=1" },
+                { name: "CJC-1295 with DAC 5mg", price: 56, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/168/images/476/cjc-1295_gradientnew__36289.1744997117.386.513.jpg?c=1" },
+                { name: "Tirzepatide 5mg", price: 84, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/169/images/477/tirzepatide_gradient_image__04068.1744769847.1280.1280__74974.1745003167.386.513.jpg?c=1" },
+                { name: "Tirzepatide 10 mg", price: 117, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/170/images/478/tirzepatide_gradient_image__04068.1744769847.1280.1280__74974.1745003167.1280.1280__82079.1745003242.386.513.jpg?c=1" },
+                { name: "Tirzepatide 15 mg", price: 150, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/171/images/479/1745003242.1280.1280__60543.1745003261.386.513.jpg?c=1" },
+                { name: "Tirzepatide 30 mg", price: 210, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/172/images/480/1745003242.1280.1280__60543.1745003261.1280.1280__56151.1745003285.386.513.jpg?c=1" },
+                { name: "Tirzepatide 60 mg", price: 360, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/173/images/481/1745003285.1280.1280__86966.1745003398.386.513.jpg?c=1" },
+                { name: "Thymosin alpha 1 - 10 MG", price: 105, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/174/images/509/Thymosin_Beta_4__30973.1745375030.386.513.png?c=1" },
+                { name: "TB-500 (Thymosin β4) 5mg", price: 63, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/175/images/508/Thymosin_Beta_4__49000.1745375010.386.513.png?c=1" },
+                { name: "TB-500 (Thymosin β4) 10mg", price: 96, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/176/images/507/Thymosin_Beta_4__55107.1745374998.386.513.png?c=1" },
+                { name: "Semaglutide 5mg", price: 84, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/177/images/485/Semagliutide_GRADIENT__51606.1744769982.1280.1280__44300.1745003629.386.513.jpg?c=1" },
+                { name: "Semaglutide 10mg", price: 120, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/178/images/486/Semagliutide_GRADIENT__51606.1744769982.1280.1280__44300.1745003629.1280.1280__76175.1745003651.386.513.jpg?c=1" },
+                { name: "Sermorelin 5mg", price: 81, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/179/images/487/Sermorelin_GRADIENT__24223.1744769956.1280.1280__22436.1745003814.386.513.jpg?c=1" },
+                { name: "SS-31 10mg", price: 63, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/182/images/506/SS31_GRADIENT__65120.1745374941.386.513.jpg?c=1" },
+                { name: "SS-31 50mg", price: 168, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/183/images/505/SS31_GRADIENT__69706.1745374862.386.513.jpg?c=1" },
+                { name: "HMG 75iu/vial", price: 36, image: "" },
+                { name: "Hexarelin 5mg", price: 45, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/185/images/490/hexarelion_GRADIENT__77586.1744769662.1280.1280__14497.1745004386.386.513.jpg?c=1" },
+                { name: "GHRP-2 5mg", price: 39, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/186/images/498/GFHRP-2_GRADIENT__75293.1745005712.386.513.jpg?c=1" },
+                { name: "GHK-Cu 100mg", price: 75, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/187/images/491/GHK-Cu_GRADIENTnew__25470.1744769701.1280.1280__28629.1745004627.386.513.jpg?c=1" },
+                { name: "IGF-1 LR3 .1mg", price: 35, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/188/images/492/IGF_LR3_GRADIENT__74339.1744769632.1280.1280__75105.1745004673.386.513.jpg?c=1" },
+                { name: "Ipamorelin 2mg", price: 27, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/189/images/493/IPAMORELIN_GRADIENT__69547.1745004773.386.513.jpg?c=1" },
+                { name: "Ipamorelin 5mg", price: 27, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/190/images/494/IPAMORELIN_GRADIENT__69547.1745004773.1280.1280__80344.1745004792.386.513.jpg?c=1" },
+                { name: "Ipamorelin 10mg", price: 27, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/191/images/495/IPAMORELIN_GRADIENT__69547.1745004773.1280.1280__80344.1745004792.1280.1280__47951.1745004810.386.513.jpg?c=1" },
+                { name: "CJC-1295 without DAC 2mg", price: 30, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/192/images/504/cjc-1295_gradientnew__39469.1745374721.386.513.jpg?c=1" },
+                { name: "CJC-1295 without DAC 5mg", price: 48, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/193/images/503/cjc-1295_gradientnew__45826.1745374707.386.513.jpg?c=1" },
+                { name: "CJC-1295 without DAC 10mg", price: 81, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/194/images/502/cjc-1295_gradientnew__75747.1745374690.386.513.jpg?c=1" },
+                { name: "BPC 157 5mg", price: 36, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/195/images/496/bpc-157_gradient__92823.1744769773.1280.1280__23508.1745005112.386.513.jpg?c=1" },
+                { name: "BPC 157 10mg", price: 60, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/196/images/497/bpc-157_gradient__92823.1744769773.1280.1280__23508.1745005112.1280.1280__78946.1745005124.386.513.jpg?c=1" },
+                { name: "CJC-1295 WITH DAC 2mg", price: 36, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/197/images/514/cjc-1295_gradientnew__39469.1745374721.1280.1280__80852.1745465106.386.513.jpg?c=1" },
+                { name: "Cagrilintide 10mg", price: 150, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/198/images/515/cagrilintide_gradient__15238.1744769759.1280.1280__48410.1745466007.386.513.jpg?c=1" },
+                { name: "PT-141 10mg", price: 104, image: "https://cdn11.bigcommerce.com/s-q1sponaupn/products/199/images/516/PT-141_GRADIENT__97313.1744770014.1280.1280__53089.1745649659.386.513.jpg?c=1" },
             ];
+            
+            // Sort products alphabetically by name
+            products.sort((a, b) => a.name.localeCompare(b.name));
             
             // Load products into the grid
             function loadProducts() {
@@ -348,12 +527,24 @@
                 products.forEach(product => {
                     const productCard = document.createElement('div');
                     productCard.className = 'product-card';
-                    productCard.dataset.id = product.id;
-                    
+                    productCard.dataset.name = product.name;
+                    // Calculate original price (1.5x, rounded to nearest dollar)
+                    const originalPrice = Math.round(product.price * 1.5);
+                    // Calculate discount percentage
+                    const discountPercent = Math.round(100 * (originalPrice - product.price) / originalPrice);
+                    // Get base name for image: lowercase, replace spaces/dashes with underscores, remove non-alphanumeric except underscore
+                    const baseName = product.name.split(' ')[0].toLowerCase().replace(/[- ]/g, '_').replace(/[^a-z0-9_]/g, '');
+                    const imagePath = `/images/${baseName}.png`;
                     productCard.innerHTML = `
-                        <img src="${product.image}" alt="${product.name}" class="product-image">
-                        <div class="product-name">${product.name}</div>
-                        <div class="product-price">$${product.price.toFixed(2)}</div>
+                        <div class="product-name-row">
+                            <span class="product-name-main">${product.name}</span>
+                        </div>
+                        <div class="product-price-row">
+                            <span class="product-original-price">$${originalPrice.toFixed(2)}</span>
+                            <span class="product-sale-price">$${product.price.toFixed(2)}</span>
+                            <span class="discount-pill">-${discountPercent}%</span>
+                        </div>
+                        <img src="${imagePath}" alt="${product.name}" class="product-image">
                         <div class="product-quantity">
                             <button type="button" class="quantity-btn decrease">-</button>
                             <input type="number" min="0" value="0" class="quantity-input" data-price="${product.price}">
@@ -396,8 +587,8 @@
                     const quantity = parseInt(input.value);
                     if (quantity > 0) {
                         const productCard = input.closest('.product-card');
-                        const productId = productCard.dataset.id;
-                        const product = products.find(p => p.id == productId);
+                        const productName = productCard.dataset.name;
+                        const product = products.find(p => p.name === productName);
                         
                         const itemTotal = quantity * product.price;
                         total += itemTotal;
@@ -445,6 +636,7 @@
                 // Get the form data
                 const customerName = document.getElementById('customerName').value;
                 const email = document.getElementById('email').value;
+                const specialInstructions = document.getElementById('specialInstructions').value;
                 
                 // Get all selected products
                 const selectedProducts = [];
@@ -454,11 +646,10 @@
                     const quantity = parseInt(input.value);
                     if (quantity > 0) {
                         const productCard = input.closest('.product-card');
-                        const productId = productCard.dataset.id;
-                        const product = products.find(p => p.id == productId);
+                        const productName = productCard.dataset.name;
+                        const product = products.find(p => p.name === productName);
                         
                         selectedProducts.push({
-                            id: product.id,
                             name: product.name,
                             price: product.price,
                             quantity: quantity
@@ -483,7 +674,8 @@
                     customerName, 
                     email, 
                     selectedProducts, 
-                    totalAmount
+                    totalAmount,
+                    specialInstructions
                 );
                 
                 // Data to send to Wix (only sending necessary info for invoice)
@@ -499,7 +691,7 @@
             });
             
             // Format purchase order for email
-            function formatPurchaseOrderForEmail(name, email, products, total) {
+            function formatPurchaseOrderForEmail(name, email, products, total, specialInstructions) {
                 const date = new Date().toLocaleDateString();
                 const poNumber = 'PO-' + Date.now().toString().slice(-6);
                 
@@ -531,6 +723,7 @@
                                 th { background-color: #f2f2f2; }
                                 .header { margin-bottom: 20px; }
                                 .total { font-weight: bold; text-align: right; margin-top: 20px; }
+                                .instructions { margin-bottom: 20px; color: #333; }
                             </style>
                         </head>
                         <body>
@@ -540,7 +733,9 @@
                                 <p><strong>Customer:</strong> ${name}</p>
                                 <p><strong>Email:</strong> ${email}</p>
                             </div>
-                            
+                            <div class="instructions">
+                                <strong>Special Instructions:</strong> ${specialInstructions ? specialInstructions : '<em>None</em>'}
+                            </div>
                             <table>
                                 <thead>
                                     <tr>
@@ -567,6 +762,7 @@
                         Date: ${date}
                         Customer: ${name}
                         Email: ${email}
+                        Special Instructions: ${specialInstructions ? specialInstructions : 'None'}
                         
                         Products:
                         ${products.map((product, i) => `${i+1}. ${product.name} - ${product.quantity} x $${product.price.toFixed(2)} = $${(product.quantity * product.price).toFixed(2)}`).join('\n')}
@@ -585,12 +781,13 @@
 
                 // Prepare EmailJS template parameters
                 const templateParams = {
-                    to_email: 'michael@dreamkidstudio.com',
-                    from_email: 'michael@dreamkidstudio.com',
+                    to_email: 'admin@vanguardhalo.com',
+                    from_email: 'admin@vanguardhalo.com',
                     customer_name: emailData.subject.replace(/Purchase Order [^ ]+ from /, ''),
                     order_summary: emailData.html,
                     order_text: emailData.text,
                     total: emailData.text.match(/Total Amount: \$?([0-9.]+)/) ? emailData.text.match(/Total Amount: \$?([0-9.]+)/)[1] : '',
+                    special_instructions: emailData.special_instructions,
                 };
 
                 // Send email using EmailJS
@@ -613,39 +810,57 @@
             
             // Initialize products
             loadProducts();
-        });
-    </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const zapierForm = document.getElementById('purchaseOrderForm');
-        if (zapierForm) {
-            zapierForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const customerName = document.getElementById('customerName').value;
-                const customerEmail = document.getElementById('email').value;
-                const orderTotalText = document.getElementById('orderTotal').textContent.replace(/[^0-9.]/g, '');
-                const orderTotal = parseFloat(orderTotalText);
-                fetch('/api/send-to-zapier', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        customerName,
-                        customerEmail,
-                        orderTotal
-                    })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    alert('Order sent to Zapier!');
-                    console.log('Zapier result:', data);
-                })
-                .catch(error => {
-                    alert('Error sending order to Zapier.');
-                    console.error('Error:', error);
+
+            // --- Product Search Functionality ---
+            const productSearch = document.getElementById('productSearch');
+            const searchResults = document.getElementById('searchResults');
+
+            productSearch.addEventListener('input', function() {
+                const query = this.value.trim().toLowerCase();
+                searchResults.innerHTML = '';
+                if (!query) {
+                    searchResults.style.display = 'none';
+                    return;
+                }
+                const matches = products.filter(p => p.name.toLowerCase().includes(query));
+                if (matches.length === 0) {
+                    searchResults.style.display = 'none';
+                    return;
+                }
+                matches.forEach(product => {
+                    const div = document.createElement('div');
+                    div.textContent = product.name;
+                    div.style.padding = '10px 12px';
+                    div.style.cursor = 'pointer';
+                    div.style.borderBottom = '1px solid var(--global--color-border)';
+                    div.addEventListener('mouseover', () => div.style.background = '#343842');
+                    div.addEventListener('mouseout', () => div.style.background = '');
+                    div.addEventListener('click', function() {
+                        // Scroll to product card
+                        const productCards = document.querySelectorAll('.product-card');
+                        for (const card of productCards) {
+                            const name = card.querySelector('.product-name-main').textContent;
+                            if (name === product.name) {
+                                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                card.classList.add('selected');
+                                setTimeout(() => card.classList.remove('selected'), 1500);
+                                break;
+                            }
+                        }
+                        searchResults.style.display = 'none';
+                        productSearch.value = '';
+                    });
+                    searchResults.appendChild(div);
                 });
+                searchResults.style.display = 'block';
             });
-        }
-    });
+            // Hide search results if clicking outside
+            document.addEventListener('click', function(e) {
+                if (!productSearch.contains(e.target) && !searchResults.contains(e.target)) {
+                    searchResults.style.display = 'none';
+                }
+            });
+        });
     </script>
 </body>
 </html>
