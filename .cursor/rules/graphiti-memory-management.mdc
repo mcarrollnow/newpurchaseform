@@ -1,0 +1,32 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Memory Management with Graphiti
+
+You have access to a persistent knowledge graph through Graphiti MCP. Use this as your memory across sessions to maintain project context.
+
+## Memory Tools:
+
+- add_entity: Store information in the graph
+- add_relationship: Create connections between entities
+- query_graph: Retrieve information from the graph
+- add_episode: Add unstructured content to the graph
+
+## Usage Guidelines:
+
+1. Start each session by querying the graph for project context
+2. Store important information, decisions, and preferences
+3. Create relationships between related entities
+4. Reference memory when making suggestions
+
+## Information to Store:
+
+- Project requirements and specifications
+- Coding preferences and patterns
+- Architecture decisions
+- Project structure
+- Previous explanations and solutions
+
+Always retrieve relevant context from memory before responding to questions about past decisions or existing code.
