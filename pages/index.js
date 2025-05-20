@@ -45,7 +45,7 @@ const products = [
   { name: "Sermorelin 5mg", price: 81, image: "/images/sermorelin.png" },
   { name: "SS-31 10mg", price: 63, image: "/images/ss_31.png" },
   { name: "SS-31 50mg", price: 168, image: "/images/ss_31.png" },
-  { name: "HMG 75iu/vial", price: 36 },
+  { name: "HMG 75iu/vial", price: 36, image: "/images/character.png" },
   { name: "Hexarelin 5mg", price: 45, image: "/images/hexarelin.png" },
   { name: "GHRP-2 5mg", price: 39, image: "/images/ghrp_2.png" },
   { name: "GHK-Cu 100mg", price: 75, image: "/images/ghk_cu.png" },
