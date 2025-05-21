@@ -29,12 +29,47 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'No valid recipients found in GMAIL_RECEIVER env variable.' });
   }
 
-  // Compose email
+  // Format order for HTML
+  const { customerName, email, specialInstructions, products = [], totalAmount } = formData;
+  const productsRows = products.map(p => `
+    <tr>
+      <td style="padding:8px;border:1px solid #ccc;">${p.name}</td>
+      <td style="padding:8px;border:1px solid #ccc;">$${p.price.toFixed(2)}</td>
+      <td style="padding:8px;border:1px solid #ccc;">${p.quantity}</td>
+      <td style="padding:8px;border:1px solid #ccc;">$${(p.price * p.quantity).toFixed(2)}</td>
+    </tr>`).join('');
+  const html = `
+    <div style="font-family:Arial,sans-serif;color:#222;max-width:600px;margin:auto;">
+      <h2>New Purchase Order</h2>
+      <p><strong>Customer Name:</strong> ${customerName || ''}</p>
+      <p><strong>Email:</strong> ${email || ''}</p>
+      <p><strong>Special Instructions:</strong> ${specialInstructions || ''}</p>
+      <h3>Order Details:</h3>
+      <table style="border-collapse:collapse;width:100%;margin-bottom:16px;">
+        <thead>
+          <tr style="background:#f4f4f4;">
+            <th style="padding:8px;border:1px solid #ccc;text-align:left;">Product</th>
+            <th style="padding:8px;border:1px solid #ccc;text-align:left;">Price</th>
+            <th style="padding:8px;border:1px solid #ccc;text-align:left;">Qty</th>
+            <th style="padding:8px;border:1px solid #ccc;text-align:left;">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${productsRows}
+        </tbody>
+      </table>
+      <p style="font-size:1.1em;"><strong>Total Amount:</strong> $${totalAmount?.toFixed(2) || '0.00'}</p>
+    </div>
+  `;
+  // Plain text version
+  const text = `New Purchase Order\n\nCustomer Name: ${customerName || ''}\nEmail: ${email || ''}\nSpecial Instructions: ${specialInstructions || ''}\n\nOrder Details:\n${products.map(p => `${p.name} | $${p.price.toFixed(2)} x ${p.quantity} = $${(p.price * p.quantity).toFixed(2)}`).join('\n')}\n\nTotal Amount: $${totalAmount?.toFixed(2) || '0.00'}`;
+
   const mailOptions = {
     from: process.env.GMAIL_USER,
     to: recipients,
     subject: 'New Form Submission',
-    text: JSON.stringify(formData, null, 2),
+    text,
+    html
   };
 
   try {
