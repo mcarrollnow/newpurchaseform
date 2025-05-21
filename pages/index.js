@@ -261,7 +261,7 @@ export default function Home() {
           <div className="site-logo">
             <img src="/images/character.png" alt="Total Health Online" />
           </div>
-          <span className="site-title">Purchase Order Form</span>
+          <span className="site-title">Request Form</span>
         </div>
       </header>
       <div className="container">

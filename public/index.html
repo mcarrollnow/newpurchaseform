@@ -121,13 +121,13 @@
             overflow: hidden;
             color: var(--global--color-font);
         }
-        .product-price {
+        .product-e {
             color: var(--global--color-highlight);
             font-weight: 700;
             margin-bottom: 10px;
             font-size: 1.1rem;
         }
-        .product-original-price {
+        .product-original-e {
             color: #93989f;
             font-size: 0.95rem;
             text-decoration: line-through;
@@ -135,6 +135,40 @@
             margin-bottom: 2px;
             margin-top: 0;
             font-weight: 400;
+        }
+        .product-e-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+        .product-original-e {
+            color: #93989f;
+            font-size: 1.1rem;
+            text-decoration: line-through;
+            margin-right: 6px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+        }
+        .product-sale-e {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-right: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+        .discount-pill {
+            background: transparent;
+            color: #f2ff86;
+            border-radius: 16px;
+            padding: 2px 14px;
+            font-size: 0.97rem;
+            font-weight: 500;
+            display: inline-block;
+            border: 1px solid #f2ff86;
+            letter-spacing: 1px;
+            font-family: 'Inter', sans-serif;
         }
         .product-quantity {
             display: flex;
@@ -206,15 +240,7 @@
             color: var(--global--color-font);
         }
         .encryption-notice {
-            display: flex;
-            align-items: center;
-            margin-top: 20px;
-            color: #93989f;
-            font-size: 14px;
-        }
-        .encryption-icon {
-            margin-right: 10px;
-            color: #2196F3;
+            display: none;
         }
         .success-message {
             text-align: center;
@@ -307,14 +333,14 @@
             display: block;
             margin-bottom: 2px;
         }
-        .product-price-row {
+        .product-e-row {
             display: flex;
             align-items: center;
             gap: 10px;
             margin-bottom: 10px;
             font-family: 'Inter', sans-serif;
         }
-        .product-original-price {
+        .product-original-e {
             color: #93989f;
             font-size: 1.1rem;
             text-decoration: line-through;
@@ -322,7 +348,7 @@
             font-family: 'Inter', sans-serif;
             font-weight: 300;
         }
-        .product-sale-price {
+        .product-sale-e {
             color: #fff;
             font-size: 1.2rem;
             font-weight: 400;
@@ -347,9 +373,9 @@
     <header class="site-header">
         <div class="site-header-wrapper">
             <div class="site-logo">
-                <img src="https://totalhealthonline.com/wp-content/uploads/2025/04/TOTAL-HEALTH-1.svg" alt="Total Health Online" />
+                <img src="https://totalhealthonline.com/wp-content/uploads/2025/04/TOTAL-HEALTH-1.svg" alt="line" />
             </div>
-            <span class="site-title">Peptide Standard VIP Channel</span>
+            <span class="site-title">Request Form</span>
         </div>
     </header>
     <div class="container">
@@ -417,14 +443,6 @@
                 </table>
             </div>
             
-            <div class="encryption-notice">
-                <svg class="encryption-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-                <span>Your item details are encrypted and not shared with our servers. Only your name, email, and total amount will be used for invoicing.</span>
-            </div>
-            
             <div class="actions">
                 <button type="button" id="clearFormBtn" class="btn btn-secondary">Clear Form</button>
                 <button type="submit" id="submitBtn" class="btn">Submit Order</button>
@@ -454,66 +472,66 @@
  
             // Product data from your CSV file
             const products = [
-                { name: "Oxytocin Acetate - 2mg", price: 59.99, image: "/oxytocin_acetate.png" },
-                { name: "PEG-MGF", price: 70, image: "/peg_mgf.png" },
-                { name: "PT-141 5mg", price: 52, image: "/pt_141.png" },
-                { name: "Selank 5mg", price: 55, image: "/selank.png" },
-                { name: "Semaglutide 2mg", price: 50, image: "/semaglutide.png" },
-                { name: "Semax 10mg", price: 74.99, image: "/semax.png" },
-                { name: "Sermorelin 2mg", price: 100, image: "/sermorelin.png" },
-                { name: "Snap-8 10mg", price: 33, image: "/snap_8.png" },
-                { name: "Thymulin", price: 119.99, image: "/thymulin.png" },
-                { name: "Tesamorelin 10 mg", price: 140, image: "/tesamorelin.png" },
-                { name: "Tesamorelin 5 mg", price: 80, image: "/tesamorelin.png" },
-                { name: "Tesamorelin 2 mg", price: 60, image: "/tesamorelin.png" },
-                { name: "Thymosin alpha 1 - 5 MG", price: 70, image: "/thymosin_alpha_1.png" },
-                { name: "TB-500 (Thymosin β4) 2mg", price: 36, image: "/tb_500.png" },
-                { name: "Retatrutide 10 MG", price: 144, image: "/retatrutide.png" },
-                { name: "Adipotide - 10 MG", price: 88.99, image: "/adipotide.png" },
-                { name: "NAD+ 500mg", price: 84, image: "/nad.png" },
-                { name: "AOD-9604 2mg", price: 42, image: "/aod_9604.png" },
-                { name: "BPC 157 2mg", price: 27, image: "/bpc_157.png" },
-                { name: "Cagrilintide 5mg", price: 90, image: "/cagrilintide.png" },
-                { name: "DSIP (Delta Sleep-Inducing Peptide) 5mg", price: 50, image: "/dsip.png" },
-                { name: "Epithalon 10mg", price: 90, image: "/epithalon.png" },
-                { name: "GHK-Cu 50mg", price: 45, image: "/ghk_cu.png" },
-                { name: "GHRP-2 - 2mg", price: 36, image: "/ghrp_2.png" },
-                { name: "HCG 5,000iu", price: 60, image: "/hcg.png" },
-                { name: "Hexarelin 2mg", price: 45, image: "/hexarelin.png" },
-                { name: "IGF-1 LR3 1mg", price: 110, image: "/igf_1.png" },
-                { name: "Kisspeptin-10 5mg", price: 65, image: "/kisspeptin_10.png" },
-                { name: "MOTS-C 10mg", price: 65, image: "/mots_c.png" },
-                { name: "Melanotan 2 10mg", price: 30, image: "/melanotan_2.png" },
-                { name: "CJC-1295 with DAC 5mg", price: 56, image: "/cjc_1295.png" },
-                { name: "Tirzepatide 5mg", price: 84, image: "/tirzepatide.png" },
-                { name: "Tirzepatide 10 mg", price: 117, image: "/tirzepatide.png" },
-                { name: "Tirzepatide 15 mg", price: 150, image: "/tirzepatide.png" },
-                { name: "Tirzepatide 30 mg", price: 210, image: "/tirzepatide.png" },
-                { name: "Tirzepatide 60 mg", price: 360, image: "/tirzepatide.png" },
-                { name: "Thymosin alpha 1 - 10 MG", price: 105, image: "/thymosin_alpha_1.png" },
-                { name: "TB-500 (Thymosin β4) 5mg", price: 63, image: "/tb_500.png" },
-                { name: "TB-500 (Thymosin β4) 10mg", price: 96, image: "/tb_500.png" },
-                { name: "Semaglutide 5mg", price: 84, image: "/semaglutide.png" },
-                { name: "Semaglutide 10mg", price: 120, image: "/semaglutide.png" },
-                { name: "Sermorelin 5mg", price: 81, image: "/sermorelin.png" },
-                { name: "SS-31 10mg", price: 63, image: "/ss_31.png" },
-                { name: "SS-31 50mg", price: 168, image: "/ss_31.png" },
-                { name: "HMG 75iu/vial", price: 36, image: "" },
-                { name: "Hexarelin 5mg", price: 45, image: "/hexarelin.png" },
-                { name: "GHRP-2 5mg", price: 39, image: "/ghrp_2.png" },
-                { name: "GHK-Cu 100mg", price: 75, image: "/ghk_cu.png" },
-                { name: "IGF-1 LR3 .1mg", price: 35, image: "/igf_1.png" },
-                { name: "Ipamorelin 2mg", price: 27, image: "/ipamorelin.png" },
-                { name: "Ipamorelin 5mg", price: 27, image: "/ipamorelin.png" },
-                { name: "Ipamorelin 10mg", price: 27, image: "/ipamorelin.png" },
-                { name: "CJC-1295 without DAC 2mg", price: 30, image: "/cjc_1295.png" },
-                { name: "CJC-1295 without DAC 5mg", price: 48, image: "/cjc_1295.png" },
-                { name: "CJC-1295 without DAC 10mg", price: 81, image: "/cjc_1295.png" },
-                { name: "BPC 157 5mg", price: 36, image: "/bpc_157.png" },
-                { name: "BPC 157 10mg", price: 60, image: "/bpc_157.png" },
-                { name: "CJC-1295 WITH DAC 2mg", price: 36, image: "/cjc_1295.png" },
-                { name: "Cagrilintide 10mg", price: 150, image: "/cagrilintide.png" },
-                { name: "PT-141 10mg", price: 104, image: "/pt_141.png" },
+                { name: "Oxytocin Acetate - 2mg", e: 59.99, image: "/oxytocin_acetate.png" },
+                { name: "PEG-MGF", e: 70, image: "/peg_mgf.png" },
+                { name: "PT-141 5mg", e: 52, image: "/pt_141.png" },
+                { name: "Selank 5mg", e: 55, image: "/selank.png" },
+                { name: "Semaglutide 2mg", e: 50, image: "/semaglutide.png" },
+                { name: "Semax 10mg", e: 74.99, image: "/semax.png" },
+                { name: "Sermorelin 2mg", e: 100, image: "/sermorelin.png" },
+                { name: "Snap-8 10mg", e: 33, image: "/snap_8.png" },
+                { name: "Thymulin", e: 119.99, image: "/thymulin.png" },
+                { name: "Tesamorelin 10 mg", e: 140, image: "/tesamorelin.png" },
+                { name: "Tesamorelin 5 mg", e: 80, image: "/tesamorelin.png" },
+                { name: "Tesamorelin 2 mg", e: 60, image: "/tesamorelin.png" },
+                { name: "Thymosin alpha 1 - 5 MG", e: 70, image: "/thymosin_alpha_1.png" },
+                { name: "TB-500 (Thymosin β4) 2mg", e: 36, image: "/tb_500.png" },
+                { name: "Retatrutide 10 MG", e: 144, image: "/retatrutide.png" },
+                { name: "Adipotide - 10 MG", e: 88.99, image: "/adipotide.png" },
+                { name: "NAD+ 500mg", e: 84, image: "/nad.png" },
+                { name: "AOD-9604 2mg", e: 42, image: "/aod_9604.png" },
+                { name: "BPC 157 2mg", e: 27, image: "/bpc_157.png" },
+                { name: "Cagrilintide 5mg", e: 90, image: "/cagrilintide.png" },
+                { name: "DSIP (Delta Sleep-Inducing Peptide) 5mg", e: 50, image: "/dsip.png" },
+                { name: "Epithalon 10mg", e: 90, image: "/epithalon.png" },
+                { name: "GHK-Cu 50mg", e: 45, image: "/ghk_cu.png" },
+                { name: "GHRP-2 - 2mg", e: 36, image: "/ghrp_2.png" },
+                { name: "HCG 5,000iu", e: 60, image: "/hcg.png" },
+                { name: "Hexarelin 2mg", e: 45, image: "/hexarelin.png" },
+                { name: "IGF-1 LR3 1mg", e: 110, image: "/igf_1.png" },
+                { name: "Kisspeptin-10 5mg", e: 65, image: "/kisspeptin_10.png" },
+                { name: "MOTS-C 10mg", e: 65, image: "/mots_c.png" },
+                { name: "Melanotan 2 10mg", e: 30, image: "/melanotan_2.png" },
+                { name: "CJC-1295 with DAC 5mg", e: 56, image: "/cjc_1295.png" },
+                { name: "Tirzepatide 5mg", e: 84, image: "/tirzepatide.png" },
+                { name: "Tirzepatide 10 mg", e: 117, image: "/tirzepatide.png" },
+                { name: "Tirzepatide 15 mg", e: 150, image: "/tirzepatide.png" },
+                { name: "Tirzepatide 30 mg", e: 210, image: "/tirzepatide.png" },
+                { name: "Tirzepatide 60 mg", e: 360, image: "/tirzepatide.png" },
+                { name: "Thymosin alpha 1 - 10 MG", e: 105, image: "/thymosin_alpha_1.png" },
+                { name: "TB-500 (Thymosin β4) 5mg", e: 63, image: "/tb_500.png" },
+                { name: "TB-500 (Thymosin β4) 10mg", e: 96, image: "/tb_500.png" },
+                { name: "Semaglutide 5mg", e: 84, image: "/semaglutide.png" },
+                { name: "Semaglutide 10mg", e: 120, image: "/semaglutide.png" },
+                { name: "Sermorelin 5mg", e: 81, image: "/sermorelin.png" },
+                { name: "SS-31 10mg", e: 63, image: "/ss_31.png" },
+                { name: "SS-31 50mg", e: 168, image: "/ss_31.png" },
+                { name: "HMG 75iu/vial", e: 36, image: "" },
+                { name: "Hexarelin 5mg", e: 45, image: "/hexarelin.png" },
+                { name: "GHRP-2 5mg", e: 39, image: "/ghrp_2.png" },
+                { name: "GHK-Cu 100mg", e: 75, image: "/ghk_cu.png" },
+                { name: "IGF-1 LR3 .1mg", e: 35, image: "/igf_1.png" },
+                { name: "Ipamorelin 2mg", e: 27, image: "/ipamorelin.png" },
+                { name: "Ipamorelin 5mg", e: 27, image: "/ipamorelin.png" },
+                { name: "Ipamorelin 10mg", e: 27, image: "/ipamorelin.png" },
+                { name: "CJC-1295 without DAC 2mg", e: 30, image: "/cjc_1295.png" },
+                { name: "CJC-1295 without DAC 5mg", e: 48, image: "/cjc_1295.png" },
+                { name: "CJC-1295 without DAC 10mg", e: 81, image: "/cjc_1295.png" },
+                { name: "BPC 157 5mg", e: 36, image: "/bpc_157.png" },
+                { name: "BPC 157 10mg", e: 60, image: "/bpc_157.png" },
+                { name: "CJC-1295 WITH DAC 2mg", e: 36, image: "/cjc_1295.png" },
+                { name: "Cagrilintide 10mg", e: 150, image: "/cagrilintide.png" },
+                { name: "PT-141 10mg", e: 104, image: "/pt_141.png" },
             ];
             
             // Sort products alphabetically by name
@@ -527,10 +545,10 @@
                     const productCard = document.createElement('div');
                     productCard.className = 'product-card';
                     productCard.dataset.name = product.name;
-                    // Calculate original price (1.5x, rounded to nearest dollar)
-                    const originalPrice = Math.round(product.price * 1.5);
+                    // Calculate original e (1.5x, rounded to nearest dollar)
+                    const originalPrice = Math.round(product.e * 1.5);
                     // Calculate discount percentage
-                    const discountPercent = Math.round(100 * (originalPrice - product.price) / originalPrice);
+                    const discountPercent = Math.round(100 * (originalPrice - product.e) / originalPrice);
                     // Get base name for image: lowercase, replace spaces/dashes with underscores, remove non-alphanumeric except underscore
                     const baseName = product.name.split(' ')[0].toLowerCase().replace(/[- ]/g, '_').replace(/[^a-z0-9_]/g, '');
                     const imagePath = `/images/${baseName}.png`;
@@ -538,15 +556,15 @@
                         <div class="product-name-row">
                             <span class="product-name-main">${product.name}</span>
                         </div>
-                        <div class="product-price-row">
-                            <span class="product-original-price">$${originalPrice.toFixed(2)}</span>
-                            <span class="product-sale-price">$${product.price.toFixed(2)}</span>
+                        <div class="product-e-row">
+                            <span class="product-original-e">$${originalPrice.toFixed(2)}</span>
+                            <span class="product-sale-e">$${product.e.toFixed(2)}</span>
                             <span class="discount-pill">-${discountPercent}%</span>
                         </div>
                         <img src="${imagePath}" alt="${product.name}" class="product-image">
                         <div class="product-quantity">
                             <button type="button" class="quantity-btn decrease">-</button>
-                            <input type="number" min="0" value="0" class="quantity-input" data-price="${product.price}">
+                            <input type="number" min="0" value="0" class="quantity-input" data-e="${product.e}">
                             <button type="button" class="quantity-btn increase">+</button>
                         </div>
                     `;
@@ -589,14 +607,14 @@
                         const productName = productCard.dataset.name;
                         const product = products.find(p => p.name === productName);
                         
-                        const itemTotal = quantity * product.price;
+                        const itemTotal = quantity * product.e;
                         total += itemTotal;
                         
                         const row = document.createElement('tr');
                         row.innerHTML = `
                             <td>${product.name}</td>
                             <td>${quantity}</td>
-                            <td>$${product.price.toFixed(2)}</td>
+                            <td>$${product.e.toFixed(2)}</td>
                             <td>$${itemTotal.toFixed(2)}</td>
                         `;
                         
@@ -650,7 +668,7 @@
                         
                         selectedProducts.push({
                             name: product.name,
-                            price: product.price,
+                            e: product.e,
                             quantity: quantity
                         });
                     }
@@ -659,7 +677,7 @@
                 // Calculate total amount
                 let totalAmount = 0;
                 selectedProducts.forEach(product => {
-                    totalAmount += product.price * product.quantity;
+                    totalAmount += product.e * product.quantity;
                 });
                 
                 // Check if any products were selected
@@ -696,13 +714,13 @@
                 
                 let productsTable = '';
                 products.forEach((product, index) => {
-                    const itemTotal = (product.quantity * product.price).toFixed(2);
+                    const itemTotal = (product.quantity * product.e).toFixed(2);
                     productsTable += `
                         <tr>
                             <td>${index + 1}</td>
                             <td>${product.name}</td>
                             <td>${product.quantity}</td>
-                            <td>$${product.price.toFixed(2)}</td>
+                            <td>$${product.e.toFixed(2)}</td>
                             <td>$${itemTotal}</td>
                         </tr>
                     `;
@@ -764,7 +782,7 @@
                         Special Instructions: ${specialInstructions ? specialInstructions : 'None'}
                         
                         Products:
-                        ${products.map((product, i) => `${i+1}. ${product.name} - ${product.quantity} x $${product.price.toFixed(2)} = $${(product.quantity * product.price).toFixed(2)}`).join('\n')}
+                        ${products.map((product, i) => `${i+1}. ${product.name} - ${product.quantity} x $${product.e.toFixed(2)} = $${(product.quantity * product.e).toFixed(2)}`).join('\n')}
                         
                         Total Amount: $${total.toFixed(2)}
                     `
