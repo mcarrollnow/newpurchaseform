@@ -16,10 +16,23 @@ export default async function handler(req, res) {
     },
   });
 
+  // Debug: log the receiver env variable
+  console.log('GMAIL_RECEIVER:', process.env.GMAIL_RECEIVER);
+  let recipients = process.env.GMAIL_RECEIVER;
+  if (!recipients) {
+    return res.status(500).json({ error: 'No recipients defined in GMAIL_RECEIVER env variable.' });
+  }
+  recipients = recipients.includes(',')
+    ? recipients.split(',').map(email => email.trim()).filter(Boolean)
+    : [recipients.trim()];
+  if (!recipients.length || !recipients[0]) {
+    return res.status(500).json({ error: 'No valid recipients found in GMAIL_RECEIVER env variable.' });
+  }
+
   // Compose email
   const mailOptions = {
     from: process.env.GMAIL_USER,
-    to: process.env.EMAIL_TO,
+    to: recipients,
     subject: 'New Form Submission',
     text: JSON.stringify(formData, null, 2),
   };
