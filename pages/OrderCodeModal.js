@@ -35,17 +35,13 @@ const OrderCodeModal = ({ orderCode, onClose, timestamp }) => {
     <div style={{
       position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.7)', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center'
     }}>
-      <div style={{ background: 'rgba(0,0,0,0.7)', position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ background: '#0b0b0b', position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ position: 'relative', background: 'none', boxShadow: 'none', padding: 0 }}>
           <button onClick={onClose} style={{ position: 'absolute', right: 24, top: 24, background: 'none', border: 'none', fontSize: 48, cursor: 'pointer', color: '#fff', zIndex: 2 }}>&times;</button>
           {/* Exportable stamp area */}
-          <div id="order-stamp-export" style={{ width: 1080, height: 1080, background: '#fff', borderRadius: 32, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 32px #0008', position: 'relative', fontFamily: 'Inter, Arial, sans-serif', overflow: 'hidden' }}>
-            <div style={{ color: '#222', fontSize: '2.8rem', fontWeight: 700, letterSpacing: '0.12em', marginBottom: 24, marginTop: 48 }}>ORDER CONFIRMATION</div>
-            <div style={{ fontSize: '4.3rem', fontWeight: 900, color: '#e00b25', letterSpacing: '0.18em', marginBottom: 36, marginTop: 0, textShadow: '0 2px 8px #ffb5b5' }}>{orderCode}</div>
-            <div style={{ fontSize: '1.7rem', color: '#555', marginBottom: 62 }}>{timestamp}</div>
-            <div style={{ position: 'absolute', bottom: 44, width: '100%', textAlign: 'center', color: '#888', fontSize: '1.3rem', letterSpacing: '0.05em' }}>
-              Thanks for your request! Check your inbox for a message from us soon.
-            </div>
+          <div id="order-stamp-export" style={{ width: 1080, height: 1080, background: '#0b0b0b', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, Arial, sans-serif', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ fontSize: '4.3rem', fontWeight: 900, color: '#000', letterSpacing: '0.18em', marginTop: 80, marginBottom: 'auto', textAlign: 'center' }}>{orderCode}</div>
+            <div style={{ fontSize: '1.7rem', color: '#000', position: 'absolute', bottom: 60, left: 0, right: 0, textAlign: 'center' }}>{timestamp}</div>
           </div>
           {/* Action buttons */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 36 }}>
