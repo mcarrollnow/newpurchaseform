@@ -1,45 +1,48 @@
 // api/send-purchase-order.js
-const sgMail = require('@sendgrid/mail');
+const nodemailer = require('nodemailer');
 
 module.exports = async (req, res) => {
-  // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
   try {
-    // Set your SendGrid API key from environment variables
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    
-    // Get data from request body
     const data = req.body;
-    
     // Validate required fields
     if (!data.to || !data.from || !data.subject) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Missing required email fields' 
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required email fields'
       });
     }
-    
-    // Send the email
-    await sgMail.send({
-      to: data.to,
+
+    // Set up nodemailer transporter for Gmail using App Password
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASS
+      }
+    });
+
+    // Compose email
+    const mailOptions = {
       from: data.from,
+      to: data.to,
       subject: data.subject,
       text: data.text,
       html: data.html
-    });
-    
-    // Return success
-    return res.status(200).json({ 
-      success: true, 
-      message: 'Purchase order sent successfully' 
+    };
+
+    await transporter.sendMail(mailOptions);
+    return res.status(200).json({
+      success: true,
+      message: 'Purchase order sent successfully'
     });
   } catch (error) {
     console.error('Error sending purchase order:', error);
-    return res.status(500).json({ 
-      success: false, 
+    return res.status(500).json({
+      success: false,
       error: 'Failed to send purchase order',
       details: error.message
     });
