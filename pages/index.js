@@ -148,12 +148,32 @@ export default function Home() {
         const data = await res.json();
         setOrderCode(data.orderCode || null);
         setOrderTimestamp('2025-05-21T10:00:42-04:00');
-        setShowOrderModal(true);
         setSuccess(true);
         setCustomerName('');
         setEmail('');
         setSpecialInstructions('');
         setQuantities(Array(products.length).fill(0));
+        // Auto-download order stamp image
+        setTimeout(() => {
+          const canvas = document.createElement('canvas');
+          canvas.width = 1080;
+          canvas.height = 1080;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#0b0b0b';
+          ctx.fillRect(0, 0, 1080, 1080);
+          ctx.font = 'bold 60px Inter, Arial, sans-serif';
+          ctx.fillStyle = '#000';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(data.orderCode || '', 540, 1080 * 0.35);
+          ctx.font = '500 32px Inter, Arial, sans-serif';
+          ctx.fillText('2025-05-21T10:00:42-04:00', 540, 1080 * 0.90);
+          const link = document.createElement('a');
+          link.download = 'order-code.png';
+          link.href = canvas.toDataURL();
+          link.target = '_self';
+          link.click();
+        }, 400);
       } else {
         setError('There was a problem submitting your order.');
       }
