@@ -1,4 +1,10 @@
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
+// Import modal dynamically to avoid SSR issues
+const OrderCodeModal = dynamic(() => import('./OrderCodeModal'), { ssr: false });
+// If you do not have html2canvas/jsPDF, add via npm or include CDN in _document.js:
+// <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+// <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 const products = [
   { name: "Oxytocin Acetate - 2mg", price: 59.99, image: "/images/oxytocin_acetate.png" },
@@ -71,6 +77,9 @@ export default function Home() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [orderCode, setOrderCode] = useState(null);
+  const [showOrderModal, setShowOrderModal] = useState(false);
+
 
   // Auto-suggest states
   const [productSearch, setProductSearch] = useState('');
@@ -135,6 +144,9 @@ export default function Home() {
         }),
       });
       if (res.ok) {
+        const data = await res.json();
+        setOrderCode(data.orderCode || null);
+        setShowOrderModal(true);
         setSuccess(true);
         setCustomerName('');
         setEmail('');
@@ -149,10 +161,28 @@ export default function Home() {
     setSubmitting(false);
   };
 
+  const handleSaveAsImage = async () => {
+    const orderCodeElement = document.getElementById('order-code');
+    const canvas = await html2canvas(orderCodeElement);
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL();
+    link.download = 'order-code.png';
+    link.click();
+  };
+
+  const handleSaveAsPDF = async () => {
+    const orderCodeElement = document.getElementById('order-code');
+    const canvas = await html2canvas(orderCodeElement);
+    const pdf = new jsPDF();
+    pdf.addImage(canvas.toDataURL(), 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save('order-code.pdf');
+  };
+
   return (
     <div>
       <style jsx global>{`
         body { background: #22262c; color: #f8f8f8; font-family: Inter, sans-serif; }
+        /* ... rest of the styles remain the same ... */
         .container { max-width: 1180px; margin: 0 auto; background: #2d3138; padding: 30px 20px; }
 .container input[type="text"],
 .container input[type="email"],
@@ -213,7 +243,10 @@ export default function Home() {
         </div>
       </header>
       <div className="container">
-        {success && <div className="success-message"><h2>Thank you for your order!</h2><p>Your purchase order has been submitted and an invoice will be sent to your email address shortly.</p></div>}
+        {success && <div className="success-message"><h2>Thank you for your order!</h2><p>Your purchase order has been submitted. Please save your order number for your records.</p></div>}
+        {showOrderModal && orderCode && (
+          <OrderCodeModal orderCode={orderCode} onClose={() => setShowOrderModal(false)} />
+        )}
         {error && <div className="error-message"><h2>There was a problem with your order</h2><p>{error}</p></div>}
         <form onSubmit={handleSubmit} style={{ display: success ? 'none' : 'block' }}>
           <div className="form-group">

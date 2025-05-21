@@ -94,19 +94,8 @@ export default async function handler(req, res) {
     // Send admin/internal email
     await transporter.sendMail(mailOptions);
 
-    // Send confirmation to user (if email provided)
-    if (email) {
-      const userMail = {
-        from: process.env.GMAIL_USER,
-        to: email,
-        subject: `Your Order Confirmation: ${orderCode}`,
-        text: `Thank you for your order!\n\nYour order number is: ${orderCode}\n\nPlease keep this for your records.`,
-        html: `<div style=\"font-family:Arial,sans-serif;color:#222;max-width:600px;margin:auto;\"><h2>Thank you for your order!</h2><p>Your order number is: <strong>${orderCode}</strong></p><p>Please keep this for your records.</p></div>`
-      };
-      await transporter.sendMail(userMail);
-    }
-
-    res.status(200).json({ success: true });
+    // Do NOT send confirmation to user anymore
+    res.status(200).json({ success: true, orderCode });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
