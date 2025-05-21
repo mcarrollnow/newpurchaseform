@@ -72,6 +72,32 @@ export default function Home() {
   const [error, setError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
+  // Auto-suggest states
+  const [productSearch, setProductSearch] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [highlightedProduct, setHighlightedProduct] = useState(null);
+
+  // Filtered products for suggestions
+  const filteredProducts = productSearch
+    ? products.filter(p => p.name.toLowerCase().includes(productSearch.toLowerCase()))
+    : [];
+
+  // Scroll and highlight logic
+  const handleSuggestionClick = (productName) => {
+    setProductSearch('');
+    setShowSuggestions(false);
+    // Find the product index
+    const idx = products.findIndex(p => p.name === productName);
+    if (idx !== -1) {
+      const card = document.getElementById(`product-card-${idx}`);
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setHighlightedProduct(idx);
+        setTimeout(() => setHighlightedProduct(null), 2000);
+      }
+    }
+  };
+
   const handleQuantityChange = (idx, value) => {
     const newQuantities = [...quantities];
     newQuantities[idx] = Math.max(0, parseInt(value) || 0);
@@ -128,6 +154,15 @@ export default function Home() {
       <style jsx global>{`
         body { background: #22262c; color: #f8f8f8; font-family: Inter, sans-serif; }
         .container { max-width: 1180px; margin: 0 auto; background: #2d3138; padding: 30px 20px; }
+.container input[type="text"],
+.container input[type="email"],
+.container input[type="number"] {
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
         .site-header { background: #22262c; border-bottom: 1px solid #4a4e58; }
         .site-header-wrapper { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 94px; }
         .site-logo img { height: 40px; margin: 20px 0 20px 10px; }
@@ -138,6 +173,12 @@ export default function Home() {
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 24px; margin-bottom: 30px; }
         .product-card { border: 1px solid #4a4e58; border-radius: 8px; padding: 18px 14px 20px 14px; background: #2d3138; }
         .product-card.selected { border-color: #e00b25; background-color: #343842; }
+.product-card.highlight {
+  box-shadow: 0 0 0 3px #f2ff86, 0 0 16px 2px #f2ff86;
+  transition: box-shadow 0.5s;
+  z-index: 2;
+}
+
         .product-image { width: 100%; height: 200px; object-fit: contain; margin-bottom: 10px; background: #40434e; border-radius: 4px; }
         .product-name-main { font-size: 1.25rem; color: #fff; display: block; margin-bottom: 2px; }
         .product-price-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
@@ -184,14 +225,65 @@ export default function Home() {
             <input type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} required />
           </div>
           <div className="form-group">
-            <label htmlFor="specialInstructions">Special Instructions</label>
-            <input type="text" id="specialInstructions" value={specialInstructions} onChange={e => setSpecialInstructions(e.target.value)} placeholder="Any special instructions for your order..." />
-          </div>
-          <div className="form-group">
-            <label>Select Products</label>
+  <label htmlFor="specialInstructions">Special Instructions</label>
+  <input type="text" id="specialInstructions" value={specialInstructions} onChange={e => setSpecialInstructions(e.target.value)} placeholder="Any special instructions for your order..." />
+</div>
+
+{/* Auto-Suggest Search */}
+<div className="form-group" style={{ position: 'relative' }}>
+  <label htmlFor="productSearch">Search Products</label>
+  <input
+    type="text"
+    id="productSearch"
+    value={productSearch}
+    onChange={e => setProductSearch(e.target.value)}
+    placeholder="Start typing to search products..."
+    autoComplete="off"
+    style={{ width: '100%' }}
+    onFocus={() => setShowSuggestions(true)}
+    onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+  />
+  {showSuggestions && productSearch && filteredProducts.length > 0 && (
+    <div
+      className="suggestion-dropdown"
+      style={{
+        position: 'absolute',
+        left: 0,
+        top: '100%',
+        width: '100%',
+        background: '#2d3138',
+        border: '1px solid #4a4e58',
+        borderTop: 'none',
+        zIndex: 10,
+        maxHeight: 220,
+        overflowY: 'auto',
+        borderRadius: '0 0 6px 6px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+      }}
+    >
+      {filteredProducts.map((product, idx) => (
+        <div
+          key={product.name + idx}
+          className="suggestion-item"
+          style={{ padding: '12px 14px', cursor: 'pointer', color: '#f8f8f8', background: 'none' }}
+          onMouseDown={() => handleSuggestionClick(product.name)}
+        >
+          {product.name}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+<div className="form-group">
+  <label>Select Products</label>
             <div className="product-grid">
               {products.map((product, idx) => (
-                <div className={`product-card${quantities[idx] > 0 ? ' selected' : ''}`} key={idx}>
+                <div
+  id={`product-card-${idx}`}
+  className={`product-card${quantities[idx] > 0 ? ' selected' : ''}${highlightedProduct === idx ? ' highlight' : ''}`}
+  key={idx}
+>
                   <div className="product-name-row">
                     <span className="product-name-main">{product.name}</span>
                   </div>
