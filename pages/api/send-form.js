@@ -7,6 +7,22 @@ export default async function handler(req, res) {
 
   const formData = req.body;
 
+  // Generate order code: 4 uppercase letters, dash, 4 numbers (AJWD-2942)
+  function generateOrderCode() {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const digits = '0123456789';
+    let code = '';
+    for (let i = 0; i < 4; i++) {
+      code += letters.charAt(Math.floor(Math.random() * letters.length));
+    }
+    code += '-';
+    for (let i = 0; i < 4; i++) {
+      code += digits.charAt(Math.floor(Math.random() * digits.length));
+    }
+    return code;
+  }
+  const orderCode = generateOrderCode();
+
   // Set up nodemailer transporter
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -41,6 +57,7 @@ export default async function handler(req, res) {
   const html = `
     <div style="font-family:Arial,sans-serif;color:#222;max-width:600px;margin:auto;">
       <h2>New Purchase Order</h2>
+      <p><strong>Order Code:</strong> ${orderCode}</p>
       <p><strong>Customer Name:</strong> ${customerName || ''}</p>
       <p><strong>Email:</strong> ${email || ''}</p>
       <p><strong>Special Instructions:</strong> ${specialInstructions || ''}</p>
@@ -62,19 +79,33 @@ export default async function handler(req, res) {
     </div>
   `;
   // Plain text version
-  const text = `New Purchase Order\n\nCustomer Name: ${customerName || ''}\nEmail: ${email || ''}\nSpecial Instructions: ${specialInstructions || ''}\n\nOrder Details:\n${products.map(p => `${p.name} | $${p.price.toFixed(2)} x ${p.quantity} = $${(p.price * p.quantity).toFixed(2)}`).join('\n')}\n\nTotal Amount: $${totalAmount?.toFixed(2) || '0.00'}`;
+  const text = `New Purchase Order\nOrder Code: ${orderCode}\n\nCustomer Name: ${customerName || ''}\nEmail: ${email || ''}\nSpecial Instructions: ${specialInstructions || ''}\n\nOrder Details:\n${products.map(p => `${p.name} | $${p.price.toFixed(2)} x ${p.quantity} = $${(p.price * p.quantity).toFixed(2)}`).join('\n')}\n\nTotal Amount: $${totalAmount?.toFixed(2) || '0.00'}`;
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
     to: recipients,
-    subject: 'New Form Submission',
+    subject: `New Purchase Order: ${orderCode}`,
     text,
     html
   };
 
   try {
     // Send email
+    // Send admin/internal email
     await transporter.sendMail(mailOptions);
+
+    // Send confirmation to user (if email provided)
+    if (email) {
+      const userMail = {
+        from: process.env.GMAIL_USER,
+        to: email,
+        subject: `Your Order Confirmation: ${orderCode}`,
+        text: `Thank you for your order!\n\nYour order number is: ${orderCode}\n\nPlease keep this for your records.`,
+        html: `<div style=\"font-family:Arial,sans-serif;color:#222;max-width:600px;margin:auto;\"><h2>Thank you for your order!</h2><p>Your order number is: <strong>${orderCode}</strong></p><p>Please keep this for your records.</p></div>`
+      };
+      await transporter.sendMail(userMail);
+    }
+
     res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json({ error: error.message });
