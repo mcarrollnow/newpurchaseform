@@ -21,20 +21,33 @@ module.exports = async (req, res) => {
       service: 'gmail',
       auth: {
         user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASS
+        pass: process.env.GMAIL_PASS
       }
     });
 
     // Compose email (recipients are hardcoded and not exposed to the client)
     // Compose email
+    // Debug: log the receiver env variable
+    console.log('GMAIL_RECEIVER:', process.env.GMAIL_RECEIVER);
+    let recipients = process.env.GMAIL_RECEIVER;
+    if (!recipients) {
+      return res.status(500).json({ error: 'No recipients defined in GMAIL_RECEIVER env variable.' });
+    }
+    recipients = recipients.includes(',')
+      ? recipients.split(',').map(email => email.trim()).filter(Boolean)
+      : [recipients.trim()];
+    if (!recipients.length || !recipients[0]) {
+      return res.status(500).json({ error: 'No valid recipients found in GMAIL_RECEIVER env variable.' });
+    }
     const mailOptions = {
       from: process.env.GMAIL_USER,
-      to: ['info@totalhealthonline.com', 'admin@vanguardhalo.com'],
+      to: recipients,
       subject: data.subject,
       replyTo: data.from || undefined,
       text: `User Email: ${data.from || 'N/A'}\n\n${data.text || ''}`,
       html: `<p><strong>User Email:</strong> ${data.from || 'N/A'}</p>` + (data.html || '')
     };
+
 
     await transporter.sendMail(mailOptions);
     return res.status(200).json({
