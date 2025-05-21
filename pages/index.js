@@ -265,7 +265,8 @@ export default function Home() {
         </div>
       </header>
       <div className="container">
-        {success && <div className="success-message"><h2>Thank you for your order!</h2><p>Your purchase order has been submitted. Please save your order number for your records.</p></div>}
+        {success && <div className="success-message"><h2>Thank you for your request!
+Keep an eye on your inbox, we'll be sending a message soon. Have a great day!</h2><p></p></div>}
         {showOrderModal && orderCode && (
           <OrderCodeModal orderCode={orderCode} timestamp={orderTimestamp} onClose={() => setShowOrderModal(false)} />
         )}
