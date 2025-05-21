@@ -43,6 +43,10 @@ const OrderCodeModal = ({ orderCode, onClose, timestamp }) => {
             <div style={{ fontSize: '4.3rem', fontWeight: 900, color: '#000', letterSpacing: '0.18em', marginTop: 80, marginBottom: 'auto', textAlign: 'center' }}>{orderCode}</div>
             <div style={{ fontSize: '1.7rem', color: '#000', position: 'absolute', bottom: 60, left: 0, right: 0, textAlign: 'center' }}>{timestamp}</div>
           </div>
+          {/* Thank you message (NOT in export) */}
+          <div style={{ color: '#000', fontSize: 20, textAlign: 'center', marginTop: 36, marginBottom: 12, fontWeight: 500 }}>
+            Thank you for your request, check your inbox soon for a message!
+          </div>
           {/* Action buttons */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 36 }}>
             <button className="btn" style={{ marginRight: 12, marginBottom: 8, width: 220 }} onClick={handleSaveAsImage}>Save as Image</button>
