@@ -3,18 +3,18 @@ import React from 'react';
 // import html2canvas from 'html2canvas';
 // import jsPDF from 'jspdf';
 
-const OrderCodeModal = ({ orderCode, onClose }) => {
-  // Use window.html2canvas and window.jspdf if loaded via CDN
+const OrderCodeModal = ({ orderCode, onClose, timestamp }) => {
+  // Ensure export is 1080x1080 and style matches ORDERSTAMP.png
   const handleSaveAsImage = async () => {
     if (!window.html2canvas) {
       alert('Image export not available.');
       return;
     }
-    const orderCodeElement = document.getElementById('order-code');
-    const canvas = await window.html2canvas(orderCodeElement);
+    const node = document.getElementById('order-stamp-export');
+    const canvas = await window.html2canvas(node, { width: 1080, height: 1080, backgroundColor: '#fff', scale: 1 });
     const link = document.createElement('a');
     link.href = canvas.toDataURL();
-    link.download = 'order-code.png';
+    link.download = 'order-stamp.png';
     link.click();
   };
 
@@ -23,28 +23,39 @@ const OrderCodeModal = ({ orderCode, onClose }) => {
       alert('PDF export not available.');
       return;
     }
-    const orderCodeElement = document.getElementById('order-code');
-    const canvas = await window.html2canvas(orderCodeElement);
-    const pdf = new window.jspdf.jsPDF();
+    const node = document.getElementById('order-stamp-export');
+    const canvas = await window.html2canvas(node, { width: 1080, height: 1080, backgroundColor: '#fff', scale: 1 });
+    const pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'px', format: [1080, 1080] });
     const imgData = canvas.toDataURL('image/png');
-    const width = pdf.internal.pageSize.getWidth();
-    const height = (canvas.height * width) / canvas.width;
-    pdf.addImage(imgData, 'PNG', 0, 0, width, height);
-    pdf.save('order-code.pdf');
+    pdf.addImage(imgData, 'PNG', 0, 0, 1080, 1080);
+    pdf.save('order-stamp.pdf');
   };
 
   return (
     <div style={{
       position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.7)', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center'
     }}>
-      <div style={{ background: '#fff', color: '#222', borderRadius: 10, padding: 32, minWidth: 340, boxShadow: '0 8px 32px rgba(0,0,0,0.2)', textAlign: 'center', position: 'relative' }}>
-        <button onClick={onClose} style={{ position: 'absolute', right: 16, top: 16, background: 'none', border: 'none', fontSize: 24, cursor: 'pointer', color: '#888' }}>&times;</button>
-        <h2 style={{ marginBottom: 16 }}>Order Confirmation</h2>
-        <div id="order-code" style={{ fontSize: 28, fontWeight: 700, letterSpacing: 2, background: '#f2ff86', color: '#222', padding: '16px 0', borderRadius: 8, margin: '16px 0', boxShadow: '0 2px 8px #e0e0e0' }}>{orderCode}</div>
-        <p style={{ color: '#357b49', fontWeight: 600, marginBottom: 12 }}>Thanks for your request, check your inbox for a message from us soon!</p>
-        <p style={{ color: '#444', marginBottom: 24 }}>Please save this order number for your records.</p>
-        <button className="btn" style={{ marginRight: 12 }} onClick={handleSaveAsImage}>Save as Image</button>
-        <button className="btn" onClick={handleSaveAsPDF}>Save as PDF</button>
+      <div style={{ background: 'rgba(0,0,0,0.7)', position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'relative', background: 'none', boxShadow: 'none', padding: 0 }}>
+          <button onClick={onClose} style={{ position: 'absolute', right: 24, top: 24, background: 'none', border: 'none', fontSize: 48, cursor: 'pointer', color: '#fff', zIndex: 2 }}>&times;</button>
+          {/* Exportable stamp area */}
+          <div id="order-stamp-export" style={{ width: 1080, height: 1080, background: '#fff', borderRadius: 32, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 32px #0008', position: 'relative', fontFamily: 'Inter, Arial, sans-serif', overflow: 'hidden' }}>
+            <div style={{ color: '#222', fontSize: '2.8rem', fontWeight: 700, letterSpacing: '0.12em', marginBottom: 24, marginTop: 48 }}>ORDER CONFIRMATION</div>
+            <div style={{ fontSize: '4.3rem', fontWeight: 900, color: '#e00b25', letterSpacing: '0.18em', marginBottom: 36, marginTop: 0, textShadow: '0 2px 8px #ffb5b5' }}>{orderCode}</div>
+            <div style={{ fontSize: '1.7rem', color: '#555', marginBottom: 62 }}>{timestamp}</div>
+            <div style={{ position: 'absolute', bottom: 44, width: '100%', textAlign: 'center', color: '#888', fontSize: '1.3rem', letterSpacing: '0.05em' }}>
+              Thanks for your request! Check your inbox for a message from us soon.
+            </div>
+          </div>
+          {/* Action buttons */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 36 }}>
+            <button className="btn" style={{ marginRight: 12, marginBottom: 8, width: 220 }} onClick={handleSaveAsImage}>Save as Image</button>
+            <button className="btn" style={{ width: 220 }} onClick={handleSaveAsPDF}>Save as PDF</button>
+            <div style={{ color: '#fff', fontSize: 16, marginTop: 20, marginBottom: 0, textAlign: 'center', maxWidth: 400 }}>
+              To save to your camera roll, tap the downloaded image or PDF and choose Save Image/Share.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

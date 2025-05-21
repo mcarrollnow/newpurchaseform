@@ -79,6 +79,7 @@ export default function Home() {
   const [submitting, setSubmitting] = useState(false);
   const [orderCode, setOrderCode] = useState(null);
   const [showOrderModal, setShowOrderModal] = useState(false);
+  const [orderTimestamp, setOrderTimestamp] = useState(null);
 
 
   // Auto-suggest states
@@ -146,6 +147,7 @@ export default function Home() {
       if (res.ok) {
         const data = await res.json();
         setOrderCode(data.orderCode || null);
+        setOrderTimestamp('2025-05-21T10:00:42-04:00');
         setShowOrderModal(true);
         setSuccess(true);
         setCustomerName('');
@@ -245,7 +247,7 @@ export default function Home() {
       <div className="container">
         {success && <div className="success-message"><h2>Thank you for your order!</h2><p>Your purchase order has been submitted. Please save your order number for your records.</p></div>}
         {showOrderModal && orderCode && (
-          <OrderCodeModal orderCode={orderCode} onClose={() => setShowOrderModal(false)} />
+          <OrderCodeModal orderCode={orderCode} timestamp={orderTimestamp} onClose={() => setShowOrderModal(false)} />
         )}
         {error && <div className="error-message"><h2>There was a problem with your order</h2><p>{error}</p></div>}
         <form onSubmit={handleSubmit} style={{ display: success ? 'none' : 'block' }}>

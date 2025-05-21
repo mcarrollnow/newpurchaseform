@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, initial-scale=1.0">
+  <title>ORDERSTAMP Preview</title>
+  <style>
+    body { background: #222; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .preview {
+      width: 1080px;
+      height: 1080px;
+      background: #fff;
+      box-shadow: 0 0 32px #0008;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 32px;
+      position: relative;
+      font-family: 'Inter', 'Arial', sans-serif;
+    }
+    .order-label {
+      color: #222;
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+      margin-top: 48px;
+    }
+    .order-code {
+      font-size: 4.3rem;
+      font-weight: 900;
+      color: #e00b25;
+      letter-spacing: 0.18em;
+      margin-bottom: 36px;
+      margin-top: 0;
+      text-shadow: 0 2px 8px #ffb5b5;
+    }
+    .timestamp {
+      font-size: 1.7rem;
+      color: #555;
+      margin-bottom: 62px;
+    }
+    .footer {
+      position: absolute;
+      bottom: 44px;
+      width: 100%;
+      text-align: center;
+      color: #888;
+      font-size: 1.3rem;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview">
+    <div class="order-label">ORDER CONFIRMATION</div>
+    <div class="order-code">AJWD-2942</div>
+    <div class="timestamp">2025-05-21T10:09:24-04:00</div>
+    <div class="footer">Thanks for your request! Check your inbox for a message from us soon.</div>
+  </div>
+</body>
+</html>
