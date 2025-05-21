@@ -191,7 +191,7 @@ export default function Home() {
             <label>Select Products</label>
             <div className="product-grid">
               {products.map((product, idx) => (
-                <div className={`product-card${quantities[idx] > 0 ? ' selected' : ''}`} key={product.name}>
+                <div className={`product-card${quantities[idx] > 0 ? ' selected' : ''}`} key={idx}>
                   <div className="product-name-row">
                     <span className="product-name-main">{product.name}</span>
                   </div>
@@ -224,7 +224,7 @@ export default function Home() {
               <tbody>
                 {products.map((product, idx) => (
                   quantities[idx] > 0 && (
-                    <tr key={product.name}>
+                    <tr key={idx}>
                       <td>{product.name}</td>
                       <td>{quantities[idx]}</td>
                       <td>${product.price.toFixed(2)}</td>
