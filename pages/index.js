@@ -15,7 +15,7 @@ const products = [
   { name: "Tesamorelin 2 mg", price: 60, image: "/images/tesamorelin.png" },
   { name: "Thymosin alpha 1 - 5 MG", price: 70, image: "/images/thymosin_alpha_1.png" },
   { name: "TB-500 2mg", price: 36, image: "/images/tb_500.png" },
-  { name: "Retatrutide 10 MG", price: 144, image: "/images/retatrutide.png" },
+  { name: "Retatrutide 10 MG", price: 144, image: "/images/retatrutiude.png" },
   { name: "Adipotide - 10 MG", price: 88.99, image: "/images/adipotide.png" },
   { name: "NAD+ 500mg", price: 84, image: "/images/nad_.png" },
   { name: "AOD-9604 2mg", price: 42, image: "/images/aod_9604.png" },
