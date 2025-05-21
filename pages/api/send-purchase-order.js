@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   try {
     const data = req.body;
     // Validate required fields
-    if (!data.to || !data.from || !data.subject) {
+    if (!data.from || !data.subject) {
       return res.status(400).json({
         success: false,
         error: 'Missing required email fields'
@@ -25,10 +25,10 @@ module.exports = async (req, res) => {
       }
     });
 
-    // Compose email
+    // Compose email (recipients are hardcoded and not exposed to the client)
     const mailOptions = {
       from: data.from,
-      to: data.to,
+      to: ['info@totalhealthonline.com', 'admin@vanguardhalo.com'],
       subject: data.subject,
       text: data.text,
       html: data.html
