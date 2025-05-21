@@ -26,12 +26,14 @@ module.exports = async (req, res) => {
     });
 
     // Compose email (recipients are hardcoded and not exposed to the client)
+    // Compose email
     const mailOptions = {
-      from: data.from,
+      from: process.env.GMAIL_USER,
       to: ['info@totalhealthonline.com', 'admin@vanguardhalo.com'],
       subject: data.subject,
-      text: data.text,
-      html: data.html
+      replyTo: data.from || undefined,
+      text: `User Email: ${data.from || 'N/A'}\n\n${data.text || ''}`,
+      html: `<p><strong>User Email:</strong> ${data.from || 'N/A'}</p>` + (data.html || '')
     };
 
     await transporter.sendMail(mailOptions);
